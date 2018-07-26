@@ -1,0 +1,21 @@
+.col-md-6.col-md-offset-3
+  .main-card
+    h2.text-center Shrink your links!
+    = simple_form_for @url, html: { class: "text-center" } do |f|
+      = f.input :original_url, as: :string, placeholder: "Enter the URL you want to shorten...", label: false
+      = f.submit "Shorten!", class: "btn btn-green"
+
+h4 Upload CSV file
+= form_tag upload_urls_path, multipart: true do
+  = file_field_tag :file
+  = submit_tag "Upload CSV"
+table
+  tr
+    th Original Url
+    th Shorten Url
+  - Url.all.each do |url|
+    tr
+      td
+        = url.original_url
+      td
+        = link_to request.base_url.concat("/" + url.short_url), url.sanitized_url, target: "_blank"
